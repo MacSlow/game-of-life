@@ -1,0 +1,8 @@
+build/CMakeCache.txt
+build/CMakeFiles/
+build/Makefile
+build/cmake_install.cmake
+build/game-of-life
+build/libBufferLib.a
+build/libDisplayLib.a
+
