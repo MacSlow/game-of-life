@@ -16,8 +16,6 @@ Buffer::Buffer (unsigned width, unsigned height)
     reset ();
 }
 
-Buffer::~Buffer () {}
-
 void Buffer::reset ()
 {
     random_device rnd;

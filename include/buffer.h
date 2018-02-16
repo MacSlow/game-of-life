@@ -12,7 +12,6 @@ using SurfaceBufferType = std::vector<unsigned char>;
 class Buffer {
   public:
     Buffer (unsigned width, unsigned height);
-    ~Buffer ();
 
     void reset ();
     void update ();
