@@ -1,6 +1,6 @@
 #include <iostream>
 #include <sstream>
-
+#include <memory>
 #include "display.h"
 
 using namespace std;
