@@ -15,7 +15,6 @@ Available interaction control-keys:
 The dependencies are modest:
 
  * cmake 2.8.12
- * nasm 2.11.08
  * C++-14 compiler (e.g. g++, clang++)
  * SDL 2.0.5
 
