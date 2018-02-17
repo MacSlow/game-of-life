@@ -4,7 +4,7 @@
 #include <SDL.h>
 #include <memory>
 
-#include "buffer.h"
+#include "game-of-life.h"
 
 class Application {
   public:

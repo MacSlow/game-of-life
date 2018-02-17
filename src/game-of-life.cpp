@@ -1,5 +1,5 @@
 #include <random>
-#include "buffer.h"
+#include "game-of-life.h"
 
 using namespace std;
 
