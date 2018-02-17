@@ -1,0 +1,25 @@
+This is a SDL2-based implementation the famous "Game Of Life"-automaton by John
+Conway. Some background theory can be found here:
+
+ * https://en.wikipedia.org/wiki/Conway's_Game_of_Life
+
+A brief screencast of the code in action can be seen here:
+
+ * https://www.youtube.com/watch?v=ZrS8_SdZ2Uk
+
+Available interaction control-keys:
+
+ * <ESC> - quits program
+ * <RETURN> - resets simulation
+
+The dependencies are modest:
+
+ * cmake 2.8.12
+ * nasm 2.11.08
+ * C++-14 compiler (e.g. g++, clang++)
+ * SDL 2.0.5
+
+It compiles and runs under recent Linux-distributions (e.g. Ubuntu 16.04). It
+should run with little or no changes under MacOS X and Windows 7 (or more 
+recent) too. But that has not yet been tested. Feedback and patches are
+welcome.
