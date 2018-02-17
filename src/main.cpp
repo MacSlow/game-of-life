@@ -5,8 +5,8 @@
 
 int main (int argc, char** argv)
 {
-    Display display (WIDTH, HEIGHT);
-    display.run ();
+    Application app (WIDTH, HEIGHT);
+    app.run ();
 
     return 0;
 }

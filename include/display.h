@@ -1,21 +1,24 @@
-#ifndef _DISPLAY_H
-#define _DISPLAY_H
+#ifndef _APPLICATION_H
+#define _APPLICATION_H
 
 #include <SDL.h>
 #include <memory>
 
 #include "buffer.h"
 
-class Display {
+class Application {
   public:
-    Display (unsigned int width, unsigned int height);
-    ~Display ();
+    Application (unsigned int width, unsigned int height);
+    ~Application ();
 
-    bool run ();
-    bool update ();
+    void run ();
+    void update ();
 
   private:
     void initialize ();
+    void handle_events ();
+    void update_framerate ();
+    void update_title ();
 
   private:
     bool _initialized = false;
@@ -30,4 +33,4 @@ class Display {
     unsigned _max = 0;
 };
 
-#endif // _DISPLAY_H
+#endif // _APPLICATION_H

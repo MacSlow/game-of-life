@@ -7,11 +7,10 @@ using namespace std;
 
 #define WIN_TITLE "Conway's Game-Of-Life by MacSlow"
 
-void Display::initialize ()
+void Application::initialize ()
 {
-    if (_initialized) {
+    if (_initialized)
         return;
-    }
 
     int result = 0;
     SDL_ClearError ();
@@ -25,7 +24,7 @@ void Display::initialize ()
     _initialized = true;
 }
 
-Display::Display (unsigned int width, unsigned int height)
+Application::Application (unsigned int width, unsigned int height)
     : _initialized (false), _window (NULL), _running (false), _paused (false),
       _seconds (0), _allFrames (0), _min (0), _avg (0), _max (0)
 {
@@ -42,96 +41,103 @@ Display::Display (unsigned int width, unsigned int height)
     _buffer = make_unique<Buffer> (width, height);
 }
 
-Display::~Display ()
+Application::~Application ()
 {
     SDL_DestroyWindow (_window);
     SDL_Quit ();
 }
 
-bool Display::run ()
+void Application::handle_events ()
 {
-    if (!_initialized) {
-        return false;
+    SDL_Event event;
+    while (SDL_PollEvent (&event)) {
+        switch (event.type) {
+        case SDL_KEYDOWN:
+            if (event.key.keysym.sym == SDLK_RETURN)
+                _buffer->reset ();
+            else if (event.key.keysym.sym == SDLK_ESCAPE)
+                _running = false;
+            else if (event.key.keysym.sym == SDLK_SPACE) {
+                _paused = !_paused;
+                update_title ();
+            }
+            break;
+
+        case SDL_QUIT:
+            _running = false;
+            break;
+        }
     }
+}
+
+void Application::run ()
+{
+    if (!_initialized)
+        return;
 
     _running = true;
 
     while (_running) {
-        SDL_Event event;
-        while (SDL_PollEvent (&event)) {
-            switch (event.type) {
-            case SDL_KEYDOWN:
-                if (event.key.keysym.sym == SDLK_RETURN) {
-                    _buffer->reset ();
-                } else if (event.key.keysym.sym == SDLK_ESCAPE) {
-                    _running = false;
-                } else if (event.key.keysym.sym == SDLK_SPACE) {
-                    _paused = !_paused;
-                    if (_paused) {
-                        std::stringstream title;
-                        title << WIN_TITLE << " - paused";
-                        std::string str (title.str ());
-                        SDL_SetWindowTitle (_window, str.c_str ());
-                    } else {
-                        SDL_SetWindowTitle (_window, WIN_TITLE);
-                    }
-                }
-                break;
-
-            case SDL_QUIT:
-                _running = false;
-                break;
-            }
-        }
-
+        handle_events ();
         update ();
     }
-
-    return true;
 }
 
-bool Display::update ()
+void Application::update_title ()
 {
-    if (!_initialized) {
-        return false;
-    }
-
     if (_paused) {
-        return true;
-    }
-
-    static unsigned int fps = 0;
-    static unsigned int lastTick = 0;
-    static unsigned int currentTick = 0;
-
-    // spit out frame-rate and frame-time
-    fps++;
-    currentTick = SDL_GetTicks ();
-    if (currentTick - lastTick > 1000) {
+        std::stringstream title;
+        title << WIN_TITLE << " - paused";
+        std::string str (title.str ());
+        SDL_SetWindowTitle (_window, str.c_str ());
+    } else {
         std::stringstream title;
         title << WIN_TITLE << " - " << _min << "/" << _avg << "/" << _max
               << " fps";
         std::string str (title.str ());
         SDL_SetWindowTitle (_window, str.c_str ());
+    }
+}
+
+void Application::update_framerate ()
+{
+    static unsigned int fps = 0;
+    static unsigned int lastTick = 0;
+    static unsigned int currentTick = 0;
+
+    fps++;
+    currentTick = SDL_GetTicks ();
+    if (currentTick - lastTick > 1000) {
+        update_title ();
+
         _seconds++;
         lastTick = currentTick;
 
-        if (_max < fps) {
+        if (_max < fps)
             _max = fps;
-        }
+
         if (_seconds > 0) {
             _allFrames += fps;
             _avg = _allFrames / _seconds;
         }
-        if (_min > fps || _min == 0) {
+
+        if (_min > fps || _min == 0)
             _min = fps;
-        }
 
         fps = 0;
     }
+}
+
+void Application::update ()
+{
+    if (!_initialized)
+        return;
+
+    if (_paused)
+        return;
+
+    update_framerate ();
 
     _buffer->update ();
     _buffer->paint (_window);
-
-    return true;
 }
