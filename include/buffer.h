@@ -2,8 +2,6 @@
 #define _BUFFER_H
 
 #include <SDL.h>
-#include <memory>
-#include <tuple>
 #include <vector>
 
 using CellState = bool;

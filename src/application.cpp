@@ -6,6 +6,7 @@
 using namespace std;
 
 #define WIN_TITLE "Conway's Game-Of-Life by MacSlow"
+#define newline '\n'
 
 void Application::initialize ()
 {
@@ -16,7 +17,7 @@ void Application::initialize ()
     SDL_ClearError ();
     result = SDL_Init (SDL_INIT_VIDEO);
     if (result != 0) {
-        std::cout << "SDL_Init() failed: " << SDL_GetError () << std::endl;
+        cout << "SDL_Init() failed: " << SDL_GetError () << newline;
         _initialized = false;
         return;
     }
@@ -34,7 +35,7 @@ Application::Application (size_t width, size_t height)
     _window = SDL_CreateWindow (WIN_TITLE, SDL_WINDOWPOS_UNDEFINED,
                                 SDL_WINDOWPOS_UNDEFINED, width, height, 0);
     if (!_window) {
-        std::cout << "window creation failed: " << SDL_GetError () << std::endl;
+        cout << "window creation failed: " << SDL_GetError () << newline;
         return;
     }
 
@@ -86,15 +87,15 @@ void Application::run ()
 void Application::update_title ()
 {
     if (_paused) {
-        std::stringstream title;
+        stringstream title;
         title << WIN_TITLE << " - paused";
-        std::string str (title.str ());
+        string str (title.str ());
         SDL_SetWindowTitle (_window, str.c_str ());
     } else {
-        std::stringstream title;
+        stringstream title;
         title << WIN_TITLE << " - " << _min << "/" << _avg << "/" << _max
               << " fps";
-        std::string str (title.str ());
+        string str (title.str ());
         SDL_SetWindowTitle (_window, str.c_str ());
     }
 }
