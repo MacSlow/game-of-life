@@ -40,26 +40,26 @@ void Buffer::reset ()
     }
 }
 
-int getNeighbourhoodSum (const CellBuffer& buffer, unsigned index,
-                         unsigned width)
+size_t getNeighbourhoodPopulation (const CellBuffer& buffer, unsigned index,
+                                unsigned width)
 {
-    int sum = 0;
+    size_t population = 0;
 
     // top row
-    sum += buffer[index - width - 1] ? 1 : 0;
-    sum += buffer[index - width] ? 1 : 0;
-    sum += buffer[index - width + 1] ? 1 : 0;
+    population += buffer[index - width - 1] ? 1 : 0;
+    population += buffer[index - width] ? 1 : 0;
+    population += buffer[index - width + 1] ? 1 : 0;
 
     // middle row, the center cell is intentionally not taken into accout
-    sum += buffer[index - 1] ? 1 : 0;
-    sum += buffer[index + 1] ? 1 : 0;
+    population += buffer[index - 1] ? 1 : 0;
+    population += buffer[index + 1] ? 1 : 0;
 
     // bottom row
-    sum += buffer[index + width - 1] ? 1 : 0;
-    sum += buffer[index + width] ? 1 : 0;
-    sum += buffer[index + width + 1] ? 1 : 0;
+    population += buffer[index + width - 1] ? 1 : 0;
+    population += buffer[index + width] ? 1 : 0;
+    population += buffer[index + width + 1] ? 1 : 0;
 
-    return sum;
+    return population;
 }
 
 void Buffer::update ()
@@ -73,26 +73,27 @@ void Buffer::update ()
                     ? 255
                     : _bufferSurface[index] > 2 ? _bufferSurface[index] - 3 : 0;
 
-            int sum = getNeighbourhoodSum (_pingPongBufferA, index, _width);
+            auto population =
+                getNeighbourhoodPopulation (_pingPongBufferA, index, _width);
 
             // die of underpopulation
-            if (sum < 2) {
+            if (population < 2) {
                 _pingPongBufferB[index] = false;
             }
 
             // sustain life
-            if (sum == 2 || sum == 3) {
+            if (population == 2 || population == 3) {
                 _pingPongBufferB[index] =
                     _pingPongBufferA[index] ? true : false;
             }
 
             // spawn life by reproduction
-            if (sum == 3 && !_pingPongBufferA[index]) {
+            if (population == 3 && !_pingPongBufferA[index]) {
                 _pingPongBufferB[index] = true;
             }
 
             // die of overpopulation
-            if (sum > 3) {
+            if (population > 3) {
                 _pingPongBufferB[index] = false;
             }
         }
