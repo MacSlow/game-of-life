@@ -1,5 +1,5 @@
-#ifndef _BUFFER_H
-#define _BUFFER_H
+#ifndef _GAME_OF_LIFE_H
+#define _GAME_OF_LIFE_H
 
 #include <SDL.h>
 #include <vector>
@@ -8,9 +8,9 @@ using CellState = bool;
 using CellBuffer = std::vector<CellState>;
 using SurfaceBuffer = std::vector<unsigned char>;
 
-class Buffer {
+class GameOfLife {
   public:
-    Buffer (size_t width, size_t height);
+    GameOfLife (size_t width, size_t height);
 
     void reset ();
     void update ();
@@ -24,4 +24,4 @@ class Buffer {
     SurfaceBuffer _bufferSurface;
 };
 
-#endif // _BUFFER_H
+#endif // _GAME_OF_LIFE_H

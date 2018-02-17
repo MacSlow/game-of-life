@@ -7,7 +7,7 @@ using namespace std;
 #define NO_INTENSITY 0
 #define FULL_INTENSITY 255
 
-Buffer::Buffer (size_t width, size_t height)
+GameOfLife::GameOfLife (size_t width, size_t height)
     : _width (width), _height (height)
 {
     size_t size = _width * _height;
@@ -18,26 +18,26 @@ Buffer::Buffer (size_t width, size_t height)
     reset ();
 }
 
-void Buffer::reset ()
+void GameOfLife::reset ()
 {
     random_device rnd;
-    uniform_int_distribution<> dist (0, 1);
+    uniform_int_distribution<> distri (0, 1);
     float radius = static_cast<float> (_width / 3);
 
     for (size_t y = 0; y < _height; ++y) {
         for (size_t x = 0; x < _width; ++x) {
+            size_t index = x + y * _width;
             float cx = static_cast<float> (x) - static_cast<float> (_width / 2);
             float cy =
                 static_cast<float> (y) - static_cast<float> (_height / 2);
-            float dst = hypot (cx, cy);
+            float distance = hypot (cx, cy);
 
-            _pingPongBufferA[x + y * _width] =
-                dst < radius ? static_cast<CellState> (dist (rnd)) : 0;
+            _pingPongBufferA[index] =
+                distance < radius ? static_cast<CellState> (distri (rnd)) : 0;
 
-            _pingPongBufferB[x + y * _width] = _pingPongBufferA[x + y * _width];
+            _pingPongBufferB[index] = _pingPongBufferA[index];
 
-            _bufferSurface[x + y * _width] =
-                _pingPongBufferA[x + y * _width] ? 255 : 0;
+            _bufferSurface[index] = _pingPongBufferA[index] ? 255 : 0;
         }
     }
 }
@@ -64,7 +64,7 @@ size_t getNeighbourhoodPopulation (const CellBuffer& buffer, size_t index,
     return population;
 }
 
-void Buffer::update ()
+void GameOfLife::update ()
 {
     for (size_t y = 1; y < _height - 1; ++y) {
         for (size_t x = 1; x < _width - 1; ++x) {
@@ -105,7 +105,7 @@ void Buffer::update ()
     swap (_pingPongBufferA, _pingPongBufferB);
 }
 
-void Buffer::paint (const SDL_Window* window) const
+void GameOfLife::paint (const SDL_Window* window) const
 {
     size_t pitch = _width * NUM_CHANNELS;
     size_t size = _height * pitch;

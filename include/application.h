@@ -25,7 +25,7 @@ class Application {
     SDL_Window* _window = nullptr;
     bool _running = true;
     bool _paused = false;
-    std::unique_ptr<Buffer> _buffer;
+    std::unique_ptr<GameOfLife> _gameOfLife;
     unsigned _seconds = 0;
     unsigned _allFrames = 0;
     unsigned _min = 0;

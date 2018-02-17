@@ -39,7 +39,7 @@ Application::Application (size_t width, size_t height)
         return;
     }
 
-    _buffer = make_unique<Buffer> (width, height);
+    _gameOfLife = make_unique<GameOfLife> (width, height);
 }
 
 Application::~Application ()
@@ -55,7 +55,7 @@ void Application::handle_events ()
         switch (event.type) {
         case SDL_KEYDOWN:
             if (event.key.keysym.sym == SDLK_RETURN)
-                _buffer->reset ();
+                _gameOfLife->reset ();
             else if (event.key.keysym.sym == SDLK_ESCAPE)
                 _running = false;
             else if (event.key.keysym.sym == SDLK_SPACE) {
@@ -139,6 +139,6 @@ void Application::update ()
 
     update_framerate ();
 
-    _buffer->update ();
-    _buffer->paint (_window);
+    _gameOfLife->update ();
+    _gameOfLife->paint (_window);
 }
