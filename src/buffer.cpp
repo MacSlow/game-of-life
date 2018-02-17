@@ -4,6 +4,8 @@
 using namespace std;
 
 #define NUM_CHANNELS 4
+#define NO_INTENSITY 0
+#define FULL_INTENSITY 255
 
 Buffer::Buffer (unsigned width, unsigned height)
     : _width (width), _height (height)
@@ -41,7 +43,7 @@ void Buffer::reset ()
 }
 
 size_t getNeighbourhoodPopulation (const CellBuffer& buffer, unsigned index,
-                                unsigned width)
+                                   unsigned width)
 {
     size_t population = 0;
 
@@ -68,10 +70,11 @@ void Buffer::update ()
         for (unsigned x = 1; x < _width - 1; ++x) {
             int index = x + y * _width;
 
-            _bufferSurface[index] =
-                _pingPongBufferA[index]
-                    ? 255
-                    : _bufferSurface[index] > 2 ? _bufferSurface[index] - 3 : 0;
+            _bufferSurface[index] = _pingPongBufferA[index]
+                                        ? FULL_INTENSITY
+                                        : _bufferSurface[index] > 2
+                                              ? _bufferSurface[index] - 3
+                                              : NO_INTENSITY;
 
             auto population =
                 getNeighbourhoodPopulation (_pingPongBufferA, index, _width);
