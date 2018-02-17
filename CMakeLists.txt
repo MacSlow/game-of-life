@@ -49,4 +49,14 @@ add_custom_target (tiny
 	COMMAND mv ./compact ./game-of-life
 )
 
-#clang-tidy -checks=clang-analyzer-unix.*,clang-analyzer-core.*,clang-analyzer-cplusplus.*,clang-analyzer-nullability.* ../src/main.cpp ../src/buffer.cpp ../src/display.cpp -- -I../include `sdl2-config --cflags` -std=c++14 -Werror -Wall -pedantic -fno-omit-frame-pointer -Ofast -march=native
+set (TIDY_CHECKS "clang-analyzer-unix.*,\
+	clang-analyzer-core.*,\
+	clang-analyzer-cplusplus.*,\
+	clang-analyzer-nullability.*")
+
+set (TIDY_FILES "${PROJECT_SOURCE_DIR}/src/*.cpp")
+
+add_custom_target (tidy
+	DEPENDS game-of-life
+	COMMAND clang-tidy -checks={TIDY_CHECKS} ${TIDY_FILES} -- -I../include -std=c++14 -Werror -Wall -pedantic -fno-omit-frame-pointer -fsanitize=undefined,leak,address `sdl2-config --cflags`
+)
