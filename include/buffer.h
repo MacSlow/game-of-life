@@ -12,15 +12,15 @@ using SurfaceBuffer = std::vector<unsigned char>;
 
 class Buffer {
   public:
-    Buffer (unsigned width, unsigned height);
+    Buffer (size_t width, size_t height);
 
     void reset ();
     void update ();
     void paint (const SDL_Window* window) const;
 
   private:
-    unsigned _width = 0;
-    unsigned _height = 0;
+    size_t _width = 0;
+    size_t _height = 0;
     CellBuffer _pingPongBufferA;
     CellBuffer _pingPongBufferB;
     SurfaceBuffer _bufferSurface;

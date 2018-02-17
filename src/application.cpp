@@ -105,12 +105,12 @@ void Application::update_framerate ()
     static unsigned int lastTick = 0;
     static unsigned int currentTick = 0;
 
-    fps++;
+    ++fps;
     currentTick = SDL_GetTicks ();
     if (currentTick - lastTick > 1000) {
         update_title ();
 
-        _seconds++;
+        ++_seconds;
         lastTick = currentTick;
 
         if (_max < fps)

@@ -7,7 +7,7 @@ using namespace std;
 #define NO_INTENSITY 0
 #define FULL_INTENSITY 255
 
-Buffer::Buffer (unsigned width, unsigned height)
+Buffer::Buffer (size_t width, size_t height)
     : _width (width), _height (height)
 {
     size_t size = _width * _height;
@@ -24,8 +24,8 @@ void Buffer::reset ()
     uniform_int_distribution<> dist (0, 1);
     float radius = static_cast<float> (_width / 3);
 
-    for (unsigned y = 0; y < _height; ++y) {
-        for (unsigned x = 0; x < _width; ++x) {
+    for (size_t y = 0; y < _height; ++y) {
+        for (size_t x = 0; x < _width; ++x) {
             float cx = static_cast<float> (x) - static_cast<float> (_width / 2);
             float cy =
                 static_cast<float> (y) - static_cast<float> (_height / 2);
@@ -42,8 +42,8 @@ void Buffer::reset ()
     }
 }
 
-size_t getNeighbourhoodPopulation (const CellBuffer& buffer, unsigned index,
-                                   unsigned width)
+size_t getNeighbourhoodPopulation (const CellBuffer& buffer, size_t index,
+                                   size_t width)
 {
     size_t population = 0;
 
@@ -66,9 +66,9 @@ size_t getNeighbourhoodPopulation (const CellBuffer& buffer, unsigned index,
 
 void Buffer::update ()
 {
-    for (unsigned y = 1; y < _height - 1; ++y) {
-        for (unsigned x = 1; x < _width - 1; ++x) {
-            int index = x + y * _width;
+    for (size_t y = 1; y < _height - 1; ++y) {
+        for (size_t x = 1; x < _width - 1; ++x) {
+            size_t index = x + y * _width;
 
             _bufferSurface[index] = _pingPongBufferA[index]
                                         ? FULL_INTENSITY
@@ -107,24 +107,24 @@ void Buffer::update ()
 
 void Buffer::paint (const SDL_Window* window) const
 {
-    unsigned pitch = _width * NUM_CHANNELS;
-    unsigned size = _height * pitch;
+    size_t pitch = _width * NUM_CHANNELS;
+    size_t size = _height * pitch;
     std::vector<unsigned char> buffer;
     buffer.reserve (size);
 
-    unsigned indexSurface = 0;
-    unsigned indexBuffer = 0;
+    size_t indexSurface = 0;
+    size_t indexBuffer = 0;
     unsigned char value = 0;
 
-    for (unsigned y = 0; y < _height; ++y) {
-        for (unsigned x = 0; x < _width; ++x) {
+    for (size_t y = 0; y < _height; ++y) {
+        for (size_t x = 0; x < _width; ++x) {
             indexSurface = x * NUM_CHANNELS + y * pitch;
             indexBuffer = x + y * _width;
             value = _bufferSurface[indexBuffer];
             buffer[indexSurface] = value;
             buffer[indexSurface + 1] = value;
             buffer[indexSurface + 2] = value;
-            buffer[indexSurface + 3] = 255;
+            buffer[indexSurface + 3] = FULL_INTENSITY;
         }
     }
 
