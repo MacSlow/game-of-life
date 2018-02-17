@@ -2,6 +2,7 @@ cmake_minimum_required (VERSION 2.8.12)
 project (game-of-life)
 
 set (CMAKE_CXX_COMPILER "clang++")
+set (CMAKE_EXPORT_COMPILE_COMMANDS "ON")
 
 include (FindPkgConfig)
 pkg_check_modules (SDL2 sdl2 REQUIRED)
@@ -49,14 +50,7 @@ add_custom_target (tiny
 	COMMAND mv ./compact ./game-of-life
 )
 
-set (TIDY_CHECKS "clang-analyzer-unix.*,\
-	clang-analyzer-core.*,\
-	clang-analyzer-cplusplus.*,\
-	clang-analyzer-nullability.*")
-
-set (TIDY_FILES "${PROJECT_SOURCE_DIR}/src/*.cpp")
-
 add_custom_target (tidy
 	DEPENDS game-of-life
-	COMMAND clang-tidy -checks={TIDY_CHECKS} ${TIDY_FILES} -- -I../include -std=c++14 -Werror -Wall -pedantic -fno-omit-frame-pointer -fsanitize=undefined,leak,address `sdl2-config --cflags`
+	COMMAND clang-tidy -p=. ../src/*.cpp
 )
