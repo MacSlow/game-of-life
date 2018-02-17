@@ -3,6 +3,6 @@ build/CMakeFiles/
 build/Makefile
 build/cmake_install.cmake
 build/game-of-life
-build/libBufferLib.a
+build/libGameOfLifeLib.a
 build/libApplicationLib.a
 build/compile_commands.json
