@@ -6,8 +6,9 @@
 #include <tuple>
 #include <vector>
 
-using CellBufferType = std::vector<bool>;
-using SurfaceBufferType = std::vector<unsigned char>;
+using CellState = bool;
+using CellBuffer = std::vector<CellState>;
+using SurfaceBuffer = std::vector<unsigned char>;
 
 class Buffer {
   public:
@@ -20,9 +21,9 @@ class Buffer {
   private:
     unsigned _width = 0;
     unsigned _height = 0;
-    CellBufferType _pingPongBufferA;
-    CellBufferType _pingPongBufferB;
-    SurfaceBufferType _bufferSurface;
+    CellBuffer _pingPongBufferA;
+    CellBuffer _pingPongBufferB;
+    SurfaceBuffer _bufferSurface;
 };
 
 #endif // _BUFFER_H

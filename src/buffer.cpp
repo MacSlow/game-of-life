@@ -9,9 +9,9 @@ Buffer::Buffer (unsigned width, unsigned height)
     : _width (width), _height (height)
 {
     size_t size = _width * _height;
-    _pingPongBufferA = CellBufferType (size);
-    _pingPongBufferB = CellBufferType (size);
-    _bufferSurface = SurfaceBufferType (size);
+    _pingPongBufferA = CellBuffer (size);
+    _pingPongBufferB = CellBuffer (size);
+    _bufferSurface = SurfaceBuffer (size);
 
     reset ();
 }
@@ -30,7 +30,7 @@ void Buffer::reset ()
             float dst = hypot (cx, cy);
 
             _pingPongBufferA[x + y * _width] =
-                dst < radius ? static_cast<bool> (dist (rnd)) : 0;
+                dst < radius ? static_cast<CellState> (dist (rnd)) : 0;
 
             _pingPongBufferB[x + y * _width] = _pingPongBufferA[x + y * _width];
 
@@ -40,7 +40,7 @@ void Buffer::reset ()
     }
 }
 
-int getNeighbourhoodSum (const CellBufferType& buffer, unsigned index,
+int getNeighbourhoodSum (const CellBuffer& buffer, unsigned index,
                          unsigned width)
 {
     int sum = 0;
