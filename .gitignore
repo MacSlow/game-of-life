@@ -4,5 +4,5 @@ build/Makefile
 build/cmake_install.cmake
 build/game-of-life
 build/libBufferLib.a
-build/libDisplayLib.a
+build/libApplicationLib.a
 build/compile_commands.json
