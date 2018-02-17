@@ -8,7 +8,7 @@
 
 class Application {
   public:
-    Application (unsigned int width, unsigned int height);
+    Application (size_t width, size_t height);
     ~Application ();
 
     void run ();
