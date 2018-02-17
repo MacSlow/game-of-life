@@ -11,12 +11,12 @@ include_directories (include ${SDL2_INCLUDE_DIRS})
 add_compile_options(-std=c++14 -Werror -Wall -pedantic -fno-omit-frame-pointer -Ofast -march=native)
 #add_compile_options(-std=c++14 -Werror -Wall -pedantic -fno-omit-frame-pointer -fsanitize=undefined,leak,address)
 
-add_library (DisplayLib src/display.cpp)
+add_library (ApplicationLib src/application.cpp)
 add_library (BufferLib src/buffer.cpp)
 
 add_executable (game-of-life src/main.cpp)
 target_link_libraries (game-of-life
-	DisplayLib
+	ApplicationLib
 	BufferLib
 	#-fsanitize=leak,address,undefined
 	${SDL2_LDFLAGS}

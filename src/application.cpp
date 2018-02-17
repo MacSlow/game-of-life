@@ -1,7 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
-#include "display.h"
+#include "application.h"
 
 using namespace std;
 

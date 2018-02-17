@@ -1,4 +1,4 @@
-#include "display.h"
+#include "application.h"
 
 #define WIDTH 512
 #define HEIGHT 512
